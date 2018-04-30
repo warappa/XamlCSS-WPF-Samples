@@ -1,0 +1,471 @@
+﻿<Window x:Class="VisualStudioInstaller.Installer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VisualStudioInstaller"
+        xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
+        xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
+        xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Width="1290" Height="720"
+        Style="{DynamicResource CustomWindowStyle}"
+        cssWPF:Css.StyleSheet="{DynamicResource windowStyle}"
+        >
+    <Window.Resources>
+        <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=WindowState}" Value="Maximized">
+                    <Setter Property="BorderThickness" Value="{Binding Source={x:Static SystemParameters.WindowResizeBorderThickness}}"/>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="60"
+                              CornerRadius="0"
+                              GlassFrameThickness="1"
+                              NonClientFrameEdges="None"
+                              ResizeBorderThickness="5"
+                              UseAeroCaptionButtons="False" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <ControlTemplate.Resources>
+                            <Style x:Key="ButtonTemplate" TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}"></ContentPresenter>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True" >
+                                        <Setter Property="Background" Value="#C9DEF5"></Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ControlTemplate.Resources>
+                        <Grid>
+                            <Border 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <AdornerDecorator>
+                                    <ContentPresenter />
+                                </AdornerDecorator>
+                            </Border>
+                            <Border 
+                                
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding Background}">
+                                <Grid Height="24"
+                                VerticalAlignment="Top">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       FontSize="16"
+                                       Foreground="Black"
+                                       Text="{TemplateBinding Title}" 
+                                       Grid.Column="1"/>
+
+                                    <Button Grid.Column="2"
+                                            Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Margin="0,0,30,0"
+                                        Cursor="Hand"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Grid>
+                                            <TextBlock Margin="0,7,0,0"></TextBlock>
+                                            <TextBlock Margin="6,0,0,0"></TextBlock>
+                                        </Grid>
+                                    </Button>
+
+
+                                    <Button x:Name="btnMinimize"
+                                        Grid.Column="3"
+                                        Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Cursor="Hand"
+                                        VerticalContentAlignment="Bottom"
+                                        Click="MinimizeClick"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        Content=""
+                                        WindowChrome.IsHitTestVisibleInChrome="True" />
+
+                                    <Button x:Name="btnRestore"
+                                            Grid.Column="4"
+                                            Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Cursor="Hand"
+                                        Click="MaximizeRestoreClick"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        Content=""
+                                        WindowChrome.IsHitTestVisibleInChrome="True" />
+
+
+                                    <Button x:Name="btnClose"
+                                            Grid.Column="5"
+                                            Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Cursor="Hand"
+                                        Click="CloseClick"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        Content=""
+                                        WindowChrome.IsHitTestVisibleInChrome="True" />
+
+                                </Grid>
+                            </Border>
+
+                        </Grid>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <css:StyleSheet x:Key="windowStyle" xml:space="preserve">
+            <css:StyleSheet.BaseStyleSheets>
+                <css:StyleSheetCollection>
+                    <StaticResource ResourceKey="installer" />
+                </css:StyleSheetCollection>
+            </css:StyleSheet.BaseStyleSheets>
+            
+        </css:StyleSheet>
+        <!--Scrollbar Thumbs-->
+        <Style TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"/>
+                            <Border Cursor="Hand" x:Name="Rectangle1" BorderThickness="7"  Margin="4,4,5,4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="{TemplateBinding Foreground}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Rectangle1" Property="BorderBrush" Value="#888888" />
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                                <Setter TargetName="Rectangle1" Property="Height" Value="8" />
+                                <Setter TargetName="Rectangle1" Property="Margin" Value="5,4,4,4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--ScrollBars-->
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="18" Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.00001*" />
+                            </Grid.RowDefinitions>
+
+                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Style="{DynamicResource ScrollThumbs}" Foreground="{TemplateBinding Foreground}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                <Setter Value="{DynamicResource ButtonSelectBrush}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+                            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                <Setter Value="{DynamicResource DarkBrush}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto" />
+                                <Setter Property="Height" Value="12" />
+                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="55"/>
+            <ColumnDefinition Width="383*"/>
+            <ColumnDefinition Width="254*"/>
+            <ColumnDefinition cssWPF:Css.Class="editor-column"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock cssWPF:Css.Class="main-title" Grid.ColumnSpan="2">Visual Studio Installer</TextBlock>
+        <StackPanel cssWPF:Css.Class="tabs" Grid.ColumnSpan="2">
+            <Border cssWPF:Css.Class="tab-item">
+                <TextBlock Text="{x:Static local:InstallerResources.Products}"></TextBlock>
+            </Border>
+        </StackPanel>
+        <Border Name="contentBorder" Grid.ColumnSpan="3">
+            <Grid VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="*" MinWidth="200"/>
+                    <ColumnDefinition Width="320"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer cssWPF:Css.Class="content" CanContentScroll="false" PanningMode="Both">
+                    <StackPanel ScrollViewer.CanContentScroll="False" >
+                        <TextBlock cssWPF:Css.Class="header" Text="{x:Static local:InstallerResources.Installed}"></TextBlock>
+
+                        <ItemsControl ItemsSource="{Binding Installed}" cssWPF:Css.Class="items">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid cssWPF:Css.Class="item">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="55"/>
+                                            <ColumnDefinition Width="350"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="Content/vs-logo.png" />
+                                        <StackPanel>
+                                            <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="link">
+                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
+                                            </TextBlock>
+                                            <StackPanel cssWPF:Css.Class="actions" Orientation="Horizontal">
+                                                <Button Click="Button_Click" Content="{x:Static local:InstallerResources.Change}"></Button>
+                                                <Button Content="{x:Static local:InstallerResources.Launch}"></Button>
+                                                <Button cssWPF:Css.Class="more">
+                                                    <TextBlock>
+                                                <Run Text="{x:Static local:InstallerResources.More}"></Run>
+                                                <Run cssWPF:Css.Class="fa fa-caret-down"></Run>
+                                                    </TextBlock>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+
+                        <TextBlock cssWPF:Css.Class="header" Text="{x:Static local:InstallerResources.Available}"></TextBlock>
+
+                        <Grid cssWPF:Css.Class="sub-section">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                            </Grid.ColumnDefinitions>
+                            <Border>
+                                <TextBlock Text="{x:Static local:InstallerResources.Release}"></TextBlock>
+                            </Border>
+                            <TextBlock cssWPF:Css.Class="close">x</TextBlock>
+                        </Grid>
+                        
+                        <ItemsControl ItemsSource="{Binding Release}" cssWPF:Css.Class="items">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid cssWPF:Css.Class="item">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="55"/>
+                                            <ColumnDefinition Width="350"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="Content/vs-logo.png" />
+                                        <StackPanel>
+                                            <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="link">
+                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.License_Terms}"></Run></Hyperlink>
+                                                <Run>&#160;|&#160;</Run>
+                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
+                                            </TextBlock>
+                                            <StackPanel cssWPF:Css.Class="actions" Orientation="Horizontal">
+                                                <Button Content="{x:Static local:InstallerResources.Install}"></Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+
+                        <Grid cssWPF:Css.Class="sub-section">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                            </Grid.ColumnDefinitions>
+                            <Border>
+                                <TextBlock Text="{x:Static local:InstallerResources.Preview}"></TextBlock>
+                            </Border>
+                            <TextBlock cssWPF:Css.Class="close">x</TextBlock>
+                        </Grid>
+
+                        <ItemsControl ItemsSource="{Binding Preview}" cssWPF:Css.Class="items">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid cssWPF:Css.Class="item">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="55"/>
+                                            <ColumnDefinition Width="350"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="Content/vs-logo-preview.png" />
+                                        <StackPanel>
+                                            <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
+                                            <TextBlock cssWPF:Css.Class="link">
+                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.License_Terms}"></Run></Hyperlink>
+                                                <Run>&#160;|&#160;</Run>
+                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
+                                            </TextBlock>
+                                            <StackPanel cssWPF:Css.Class="actions" Orientation="Horizontal">
+                                                <Button Content="{x:Static local:InstallerResources.Install}"></Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+                
+                <Grid cssWPF:Css.Class="info-pane" Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <FlowDocumentScrollViewer>
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run cssWPF:Css.Class="header" Text="{x:Static local:InstallerResources.Welcome_Title}"></Run>
+                            </Paragraph>
+
+                            <Paragraph>
+                                <Run Text="{x:Static local:InstallerResources.Welcome_Text}"></Run>
+                            </Paragraph>
+                            <List cssWPF:Css.Class="list">
+                                <ListItem>
+                                    <Paragraph>
+                                        <Run cssWPF:Css.Class="fa fa-graduation-cap"></Run> &#160;
+                                        <Hyperlink NavigateUri="https://aka.ms/willowlearn" RequestNavigate="Hyperlink_RequestNavigate">
+                                            <Run cssWPF:Css.Class="subheader important" Text="{x:Static local:InstallerResources.Learn_Title}"></Run>
+                                        </Hyperlink>
+                                    </Paragraph>
+                                    <Paragraph cssWPF:Css.Class="text">
+                                        <Run Text="{x:Static local:InstallerResources.Learn_Text}"></Run>
+                                    </Paragraph>
+                                </ListItem>
+                            </List>
+
+                            <List cssWPF:Css.Class="list">
+                                <ListItem>
+                                    <Paragraph>
+                                        <Run cssWPF:Css.Class="fa fa-shoping-bag"></Run> &#160;&#160;
+                                        <Hyperlink NavigateUri="https://aka.ms/willowmarketplace" RequestNavigate="Hyperlink_RequestNavigate">
+                                            <Run cssWPF:Css.Class="subheader important" Text="{x:Static local:InstallerResources.Marketplace_Title}"></Run>
+                                        </Hyperlink>
+                                    </Paragraph>
+                                    <Paragraph cssWPF:Css.Class="text">
+                                        <Run TextBlock.TextAlignment="Center" Text="{x:Static local:InstallerResources.Marketplace_Text}"></Run>
+                                    </Paragraph>
+                                </ListItem>
+                            </List>
+                            <Paragraph Margin="0,21,0,5">
+                                <Run cssWPF:Css.Class="subheader" Text="{x:Static local:InstallerResources.NeedHelp_Title}"></Run>
+                            </Paragraph>
+                            <Paragraph>
+                                <Run Text="{x:Static local:InstallerResources.FAQ_Text_1}"></Run>
+                                <Hyperlink NavigateUri="https://go.microsoft.com/fwlink/?linkid=834731" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Run Text="{x:Static local:InstallerResources.FAQ_Link_Text}"></Run>
+                                </Hyperlink>
+                                <Run Text="{x:Static local:InstallerResources.FAQ_Text_2}"></Run>
+                            </Paragraph>
+                            <Paragraph>
+                                <Run Text="{x:Static local:InstallerResources.Chat_Text_1}"></Run>
+                                <Hyperlink NavigateUri="https://go.microsoft.com/fwlink/?linkid=834732" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Run Text="{x:Static local:InstallerResources.Chat_Link_Text}"></Run>
+                                </Hyperlink>
+                                <Run Text="{x:Static local:InstallerResources.Chat_Text_2}"></Run>
+                            </Paragraph>
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer>
+                    <Label Grid.Row="1">1.16.1237.423</Label>
+                    <Button Grid.Row="1" Width="90" HorizontalAlignment="Left" Click="Button_EditCss">
+                        <TextBlock><Run cssWPF:Css.Class="fa fa-css3"></Run> <Run>Edit CSS</Run></TextBlock>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+        <TextBox Grid.Row="2" Grid.Column="3" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 cssWPF:Css.Class="editor"
+                 AcceptsReturn="True"
+                 Text="{Binding Content, Source={StaticResource installer}, Delay=300, UpdateSourceTrigger=PropertyChanged}">
+        </TextBox>
+    </Grid>
+</Window>

@@ -1,0 +1,347 @@
+﻿<Application x:Class="Basics.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Basics"
+             xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
+             xmlns:coll="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+             StartupUri="MainWindow.xaml"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <BeginStoryboard x:Key="d" Storyboard="{DynamicResource s}"></BeginStoryboard>
+        <ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
+            <Border  BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderThickness="1">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+        </ControlTemplate>
+
+        <css:StyleSheet x:Key="inlineStyle" xml:space="preserve">
+<css:StyleSheet.Content>
+<![CDATA[
+/* declare variables */
+$background-color: #333; 
+$foreground-color: #fff;
+
+$important-bg-color: #9c1ab2;
+$important-color: #e7abf1;
+
+$control-color: #666;
+$control-hover-color: #999;
+
+$font-color: #ddd;
+$control-height: 32;
+  
+/* for all elements that are "important" */
+.important
+{
+    Background: $important-bg-color;
+}
+
+/* for all elements that 
+    - are jumbo elements OR 
+    - are Runs directly under a jumbo-element (workaround a bug in WPF designer if TextBlock is initialized not as attribute but as xml-node-content)
+*/
+.jumbo,
+.jumbo>Run {
+    FontSize: $control-height;
+}
+
+/* for all elements that are navigation-buttons (means a container of navigation buttons) */
+.navigation-buttons {
+    Background: #222;
+    Orientation: Horizontal;
+    FlowDirection: RightToLeft;
+    Grid.Row: 1;
+    
+    /* for all Buttons somewhere down in a navigation-buttons container */
+    Button {
+        Margin: 5, 5, 5, 5;
+    
+        /* for all Buttons following a Button in side a navigation-buttons container */
+        &~Button {
+            Margin: 0, 5, 5, 5;
+        }
+    }
+}
+    
+/* for all Grids */
+Grid {
+    Background: $background-color;
+}
+    
+/* for all StackPanels */                
+StackPanel {
+    Spacing: 10;
+    Background: $background-color;
+    SnapsToDevicePixels: true;
+    
+    /* for all TextBlocks somewhere down in an StackPanel */
+    TextBlock {
+        Foreground: $font-color;
+    }
+}
+    
+/* for all TextBlocks */
+TextBlock
+{
+    Padding: 5;
+    UseLayoutRounding: true;
+              
+    /* for all TextBlocks that are important */
+    &.important {
+        Background: $important-bg-color;
+        Foreground: $important-color;
+        TextAlignment: Center;
+    }
+}
+    
+/* for all Buttons */
+Button
+{
+    Height: $control-height;
+    MinWidth: 150;
+    Foreground: $foreground-color;
+    Background: #333;
+    BorderBrush: #555;
+    Padding: 5;
+    Template: #DynamicResource buttonTemplate; /* using a control template in a resource dictioanry */
+    Cursor: Hand;
+    
+    /* when IsMouseOver property is true, then...*/
+    @Property IsMouseOver true {
+        Background: $control-hover-color;
+    }
+    
+    /* when IsPressed property is true, then...*/
+    @Property IsPressed true {
+        Background: #333;
+        Foreground: #fff;
+    }
+    
+    /* when Button is important */
+    &.important {
+        Foreground: #fff;
+        FontWeight: Bold;
+    
+        /* when IsMouseOver property is true, then...*/
+        @Property IsMouseOver true {
+            Background: #bc2ac2;
+        }
+        
+        /* when IsPressed property is true, then...*/
+        @Property IsPressed true {
+            Background: $important-bg-color;
+        }
+    }
+}   
+    
+#ToggleLight {
+    Visibility: Collapsed;
+}
+]]>
+</css:StyleSheet.Content>
+        </css:StyleSheet>
+
+        <css:StyleSheet x:Key="inlineStyleAdvanced" xml:space="preserve">
+<css:StyleSheet.Content>
+<![CDATA[
+/* define a custom namespace alias*/
+@namespace controlalias "clr-namespace:System.Windows.Controls;assembly=PresentationFramework";
+
+/* define some variables*/
+/* colors */
+$background-color: #333;
+$light-background-color: #eee;
+    
+$background-color-lighter: #666;
+
+$foreground-color: #fff;
+$light-foreground-color: #222;
+
+$important-bg-color: #9c1ab2;
+$important-color: #e7abf1;
+
+$font-color: #ddd;
+$light-font-color: #222;
+    
+$control-color: #666;
+$light-control-color: #ccc;
+    
+$control-hover-color: #999;
+$light-control-hover-color: #999;
+
+/* sizes */
+$font-size-base: 12;
+$control-height: 32;
+   
+/* for every element */    
+* {
+    FontSize: $font-size-base;
+} 
+
+/* for every Run element */
+Run {
+    Foreground: Red;
+}
+    
+/* for all elements that are "important" */
+.important
+{
+    Background: $important-bg-color;
+    
+    /* ...that is somewhere *inside* a light element */
+    .light & {
+        Background: $important-bg-color;
+    }
+}
+    
+/* for every jumbo or Run directly inside jumbo element */
+.jumbo,
+.jumbo>Run {
+    FontSize: $control-height;
+}
+    
+/* for every navigation button container */
+.navigation-buttons {
+    Background: #222;
+    Orientation: Horizontal;
+    FlowDirection: RightToLeft;
+    Grid.Row: 1;
+    
+    /* ...that is somewhere *inside* a light element */
+    .light & {
+        Background: #ddd;
+    }
+    
+    /* for every Button that is in the namespace System.Windows.Controls (because of controlalias) */
+    controlalias|Button {
+        Margin: 5, 5, 5, 5;
+    
+        /* a Button following a Button*/
+        &~Button {
+            Margin: 0, 5, 5, 5;
+        }
+    }
+}
+    
+/* for every Grid */
+Grid {
+    Background: $background-color;
+    
+    /* ...that is somewhere inside a light element */
+    .light & {
+        Background: $light-background-color;
+    }
+}
+    
+/* for all StackPanels */                
+StackPanel {
+    Spacing: 10;
+    Background: $background-color;
+    SnapsToDevicePixels: true;
+    
+    /* ...that is somewhere inside a light element */
+    .light & {
+        Background: $light-background-color;
+    }
+    
+    /* for all TextBlocks somewhere down in an StackPanel */
+    TextBlock {
+        Foreground: $font-color;
+    
+        /* ...that is somewhere inside a light element */
+        .light & {
+            Foreground: $light-font-color;
+        }
+    }
+}
+    
+/* for all TextBlocks */
+TextBlock
+{
+    Padding: 5;
+    UseLayoutRounding: true;
+              
+    /* for all TextBlocks that are important OR are important and somewhere inside a light element */
+    &.important,
+    .light &.important{
+        Background: $important-bg-color;
+        Foreground: $important-color;
+        TextAlignment: Center;
+    }
+}
+    
+/* for all Buttons */
+Button
+{
+    Height: $control-height;
+    MinWidth: 150;
+    Foreground: $foreground-color;
+    Background: $control-color;
+    Padding: 5;
+    Template: #DynamicResource buttonTemplate;
+    Cursor: Hand;
+    
+    /* ...that is somewhere inside a light element */
+    .light & {
+        Foreground: $light-foreground-color;
+        Background: $light-control-color;
+    
+        /* if property IsMouseOver is true */
+        @Property IsMouseOver true {
+            Background: $light-control-hover-color;
+        }
+    
+        /* if property IsPressed is true */
+        @Property IsPressed true {
+            Background: #333;
+        }
+    }
+    
+    /* if property IsMouseOver is true */
+    @Property IsMouseOver true {
+        Background: $control-hover-color;
+    }
+    
+    /* if property IsPressed is true */
+    @Property IsPressed true {
+        Background: #333;
+        Foreground: #fff;
+    }
+    
+    /* ...that is important */
+    &.important {
+        Foreground: #fff;
+        FontWeight: Bold;
+    
+        /* if property IsMouseOver is true */
+        @Property IsMouseOver true {
+            Background: #bc2ac2;
+        }
+    
+        /* if property IsPressed is true */
+        @Property IsPressed true {
+            Background: $important-bg-color;
+        }
+    }
+}
+ 
+/* the one element named ToggleLight */
+#ToggleLight {
+    Tag: False;
+    Background: #666;
+    Content: "Disable Light";
+    
+    /* if property Tag is "True" */
+    @Property Tag "True" {
+        Content: "Enable Light";
+        Background: #ffc100;
+        Foreground: #333;
+        FontWeight: Bold;
+    }
+}
+    
+]]>
+</css:StyleSheet.Content>
+        </css:StyleSheet>
+    </Application.Resources>
+</Application>

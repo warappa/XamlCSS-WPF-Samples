@@ -1,0 +1,38 @@
+﻿<Window x:Class="Basics.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Basics"
+        xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
+        xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
+        xmlns:aaa="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525"
+        cssWPF:Css.StyleSheet="{DynamicResource windowStyle}"
+        >
+    <Window.Resources>
+        <css:StyleSheet x:Key="windowStyle" xml:space="preserve" SingleBaseStyleSheet="{StaticResource inlineStyle}">
+            <css:StyleSheet.Content>
+                Button { 
+                    Background: $background-color;
+                }
+            </css:StyleSheet.Content>
+        </css:StyleSheet>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock cssWPF:Css.Class="important jumbo" Text="Important Jumbo Text"/>
+            <TextBlock cssWPF:Css.Class="important" Text="Important Text"/>
+            <TextBlock Text="Normal Text"/>
+        </StackPanel>
+        <StackPanel cssWPF:Css.Class="navigation-buttons">
+            <Button Click="Button_Click" cssWPF:Css.Class="important">Toggle Advanced/Simple Style</Button>
+            <Button x:Name="ToggleLight" Click="ToggleLight_Click" Tag="True"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
