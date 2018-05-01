@@ -74,10 +74,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="XamlCSS, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XamlCSS.2.2.0-pre2\lib\dotnet\XamlCSS.dll</HintPath>
+      <HintPath>..\packages\XamlCSS.2.2.0-pre3\lib\dotnet\XamlCSS.dll</HintPath>
     </Reference>
     <Reference Include="XamlCSS.WPF, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XamlCSS.WPF.2.2.0-pre2\lib\netstandard1.0\XamlCSS.WPF.dll</HintPath>
+      <HintPath>..\packages\XamlCSS.WPF.2.2.0-pre3\lib\netstandard1.0\XamlCSS.WPF.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
