@@ -8,7 +8,7 @@
         xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
         xmlns:aaa="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="Basics" Height="350" Width="525"
         cssWPF:Css.StyleSheet="{DynamicResource windowStyle}"
         >
     <Window.Resources>
