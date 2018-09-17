@@ -11,230 +11,310 @@
         WindowStyle="None"
         Width="1290" Height="720"
         Style="{DynamicResource CustomWindowStyle}"
-        cssWPF:Css.StyleSheet="{DynamicResource windowStyle}"
+        cssWPF:Css.StyleSheet="{DynamicResource installer}"
+        d:DataContext="{d:DesignInstance Type=local:InstallerViewModel}"
         >
     <Window.Resources>
-        <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=WindowState}" Value="Maximized">
-                    <Setter Property="BorderThickness" Value="{Binding Source={x:Static SystemParameters.WindowResizeBorderThickness}}"/>
-                </DataTrigger>
-            </Style.Triggers>
-            <Setter Property="WindowChrome.WindowChrome">
-                <Setter.Value>
-                    <WindowChrome CaptionHeight="60"
-                              CornerRadius="0"
-                              GlassFrameThickness="1"
-                              NonClientFrameEdges="None"
-                              ResizeBorderThickness="5"
-                              UseAeroCaptionButtons="False" />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="BorderThickness" Value="0"></Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Window}">
-                        <ControlTemplate.Resources>
-                            <Style x:Key="ButtonTemplate" TargetType="Button">
-                                <Setter Property="Background" Value="Transparent"></Setter>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}">
-                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}"></ContentPresenter>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True" >
-                                        <Setter Property="Background" Value="#C9DEF5"></Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ControlTemplate.Resources>
-                        <Grid>
-                            <Border 
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding Background}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                                <AdornerDecorator>
-                                    <ContentPresenter />
-                                </AdornerDecorator>
-                            </Border>
-                            <Border 
-                                
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding Background}">
-                                <Grid Height="24"
-                                VerticalAlignment="Top">
+        <css:StyleSheet x:Key="installer" xml:space="preserve">
+            <css:StyleSheet.Content>
+                <![CDATA[//
+ @import "Content/fontawesome.scss";
+           
+/* BASE COLORS */
+$vs-blue: #3399FF;
+$vs-violet: #8D68C8;  
+$color-secondary-info: #6a6a6a;
+    
+/* GENERIC CONTROL COLORS */
+$border-color: #ddd;
+$control-border: #bbb;
+$control-hover-background-color: #C9DEF5;
+$control-focus-background-color: #BEE6FD;
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+/* SPECIAL COLORS */
+$info-text-color: #666;  
+$link-color: #267CD2;
+$header-color: #444;
+$color-separator: #999;
+    
+/* FONT SIZES */
+$font-size-base: 13;
+$font-size-larger: 17;
+$font-size-large: 22;
+$font-size-jumbo: 34;
 
-                                    <TextBlock Margin="5,0,0,0"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       FontSize="16"
-                                       Foreground="Black"
-                                       Text="{TemplateBinding Title}" 
-                                       Grid.Column="1"/>
+/* BUTTON */
+$button-background-color: #ECECF0;                
+$button-hover-background-color: #C9DEF5;                
+$button-hover-border-color: #3399FF;                
+$button-focus-background-color: #BEE6FD;                
+$button-focus-border-color: $vs-blue;
+$button-active-background-color: #3399FF;                
+$button-active-border-color: #3399FF;                
+$button-active-foreground-color: #fff; 
+                
+TextBlock { 
+    FontSize: $font-size-base;
+}
+                
+Border {
+    Focusable: false;
+}
+               
+Hyperlink {
+    TextDecorations: None;
+    Cursor: Hand;
+    Foreground: $link-color;
+                            
+    @Property IsMouseOver true {
+        TextDecorations: Underline;
+    }
+} 
+    
+ScrollBar:visualtree {
+    Foreground: #D0D1D7;
+    Background: #E8E8EC;
+}
+    
+Button {
+    Cursor: Hand;
+    UseLayoutRounding: true;
+    SnapsToDevicePixels: true;
+    Background: $button-background-color;
+                
+    Template: #DynamicResource buttonTemplate;
+                
+    @Property IsMouseOver true {
+        BorderBrush: $button-hover-border-color;
+        Background: $button-hover-background-color;    
+    }
+                
+    @Property IsFocused true {
+        BorderBrush: $button-focus-border-color;
+        Background: $button-focus-background-color;
+    }
+    
+    @Property IsPressed true {
+        FontWeight: Bold;
+        BorderBrush: $button-active-border-color;
+        Background: $button-active-background-color;
+        Foreground: $button-active-foreground-color;
+    }
+}                
+                
+  
+.main-title {
+    FontSize: $font-size-jumbo;
+    Foreground: $vs-violet;
+    Margin: 0,30,0,38;
+}  
+                
+.tabs {
+    Orientation: Horizontal;
+}
+                
+.tab-item {
+    Cursor: Hand;
+    BorderThickness: 0,0,0,3;
+    BorderBrush: $vs-blue;
+                    
+    > TextBlock {
+        FontSize: 16;
+        Height: 23;
+        FontWeight: SemiBold;
+        Foreground: $header-color;
+    
+        @Property IsMouseOver true {
+            Foreground: $vs-blue;
+        }
+    }
+}                
+                 
+#contentBorder {
+    BorderBrush: $border-color;
+    BorderThickness: 0,1,0,0;
 
-                                    <Button Grid.Column="2"
-                                            Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Margin="0,0,30,0"
-                                        Cursor="Hand"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        WindowChrome.IsHitTestVisibleInChrome="True">
-                                        <Grid>
-                                            <TextBlock Margin="0,7,0,0"></TextBlock>
-                                            <TextBlock Margin="6,0,0,0"></TextBlock>
-                                        </Grid>
-                                    </Button>
-
-
-                                    <Button x:Name="btnMinimize"
-                                        Grid.Column="3"
-                                        Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Cursor="Hand"
-                                        VerticalContentAlignment="Bottom"
-                                        Click="MinimizeClick"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        Content=""
-                                        WindowChrome.IsHitTestVisibleInChrome="True" />
-
-                                    <Button x:Name="btnRestore"
-                                            Grid.Column="4"
-                                            Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Cursor="Hand"
-                                        Click="MaximizeRestoreClick"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        Content=""
-                                        WindowChrome.IsHitTestVisibleInChrome="True" />
-
-
-                                    <Button x:Name="btnClose"
-                                            Grid.Column="5"
-                                            Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Cursor="Hand"
-                                        Click="CloseClick"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        Content=""
-                                        WindowChrome.IsHitTestVisibleInChrome="True" />
-
-                                </Grid>
-                            </Border>
-
-                        </Grid>
-
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <css:StyleSheet x:Key="windowStyle" xml:space="preserve">
-            <css:StyleSheet.BaseStyleSheets>
-                <css:StyleSheetCollection>
-                    <StaticResource ResourceKey="installer" />
-                </css:StyleSheetCollection>
-            </css:StyleSheet.BaseStyleSheets>
-            
+    .content {
+        Padding: 55,0,0,0;
+        VerticalScrollBarVisibility: Auto;
+                    
+        .header {
+            Margin: 0,35,0,20;
+            FontSize: $font-size-large;
+            Foreground: $header-color;
+        }
+    
+               
+	    .items {
+		    Margin: 0,10,0,0;
+		    Orientation: Horizontal;
+	    }
+                
+        .item {
+            MinHeight: 190;
+    
+            >Image {
+                Width: 23;
+                Height: 21;
+                VerticalAlignment: Top;
+                Margin: 0,7,0,0;
+            }
+    
+            .title {
+                Margin: 0,5,0,0;
+                FontSize: $font-size-larger;
+                Foreground: $header-color;
+            }
+            .version {
+                Margin: 0, 5,0,0;
+                Foreground: $color-secondary-info;
+            }
+            .info {
+                Margin: 0, 5;
+                Foreground: $color-secondary-info;
+                MinHeight: 50;
+            }
+            .link {
+                >Run {
+                    Foreground: $color-separator;
+                }
+            }
+                        
+            .actions {
+                Orientation: Horizontal;
+                Margin: 0,10;
+                            
+                Button {
+                    Cursor: Hand;
+                    BorderBrush: $control-border;
+                    MinWidth: 85;
+                    Height: 25;
+                
+                    +Button {
+                        Margin: 5,10;
+                    }
+                
+                    &.more {
+                        Margin: 0;
+                        BorderBrush: Transparent;
+                        Background: Transparent;
+                
+                        @Property IsMouseOver true {
+                            BorderBrush: $control-hover-background-color;
+                            Background: $control-hover-background-color;
+                        }
+                                    
+                        @Property IsFocused true {
+                            BorderBrush: $control-focus-background-color;
+                            Background: $control-focus-background-color;
+                        }
+                
+                        @Property IsPressed true {
+                            BorderBrush: $vs-blue;
+                            Background: $vs-blue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}                
+   
+   
+.info-pane {
+    Background: #f0f0f0;
+                
+    .version {
+        Foreground: $info-text-color;
+        HorizontalContentAlignment: Right;
+        Padding: 0,3,20,3;
+    }
+    
+    .css-edit-button {
+        Width: 90;
+        HorizontalAlignment: Left;
+    }
+    
+                   
+    FlowDocument {
+        FontFamily: Arial;
+        Foreground: $info-text-color;
+        FontSize: 13.3;
+        LineHeight: 17;
+        PagePadding: 30, 35, 32, 5;
+                
+        .fa {
+            Foreground: #000;
+            MinWidth: 50;
+            FontSize: 15;
+        }
+                
+        Paragraph {
+            TextBlock.TextAlignment: Left;
+            Margin: 0,0,0,10;
+        }
+    
+        Run {
+            &.header {
+                FontSize: $font-size-large;
+            }
+                
+            &.subheader {
+                FontSize: $font-size-larger;
+            }
+        }
+    Hyperlink {
+        Foreground: #267CD2;
+    }
+                
+        .list {
+            MarkerStyle: None;
+            Margin: 0, 20, 0, 0;
+            Padding: 0;
+    
+            Paragraph {
+                Margin: 0,0,0,5;
+            }
+    
+            .text {
+                Margin: 31,0,0,0;
+            }
+        }
+    }
+}  
+                
+                
+   
+.editor { 
+    FontSize: 13;
+}
+.editor-column {
+    Width: 0;
+    
+    .edit-mode & {
+        Width: 554;
+    }
+}  
+.dark {
+    Background: #333;
+    
+    TextBlock {
+        Foreground: White;
+    }
+    
+    #contentBorder .content {
+        .item .title, 
+        .item .info,
+        StackPanel .header {
+            Foreground: White;
+        }
+    }
+}
+                
+                ]]>
+            </css:StyleSheet.Content>
         </css:StyleSheet>
-        <!--Scrollbar Thumbs-->
-        <Style TargetType="{x:Type Thumb}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Grid x:Name="Grid">
-                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"/>
-                            <Border Cursor="Hand" x:Name="Rectangle1" BorderThickness="7"  Margin="4,4,5,4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="{TemplateBinding Foreground}" />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Rectangle1" Property="BorderBrush" Value="#888888" />
-                            </Trigger>
-                            <Trigger Property="Tag" Value="Horizontal">
-                                <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
-                                <Setter TargetName="Rectangle1" Property="Height" Value="8" />
-                                <Setter TargetName="Rectangle1" Property="Margin" Value="5,4,4,4"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!--ScrollBars-->
-        <Style TargetType="{x:Type ScrollBar}">
-            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-            <Setter Property="Width" Value="10" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ScrollBar}">
-                        <Grid x:Name="GridRoot" Width="18" Background="{TemplateBinding Background}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.00001*" />
-                            </Grid.RowDefinitions>
-
-                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
-                                <Track.Thumb>
-                                    <Thumb x:Name="Thumb" Style="{DynamicResource ScrollThumbs}" Foreground="{TemplateBinding Foreground}" />
-                                </Track.Thumb>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
-                                </Track.IncreaseRepeatButton>
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
-                                </Track.DecreaseRepeatButton>
-                            </Track>
-                        </Grid>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
-                                <Setter Value="{DynamicResource ButtonSelectBrush}" TargetName="Thumb" Property="Background" />
-                            </Trigger>
-                            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
-                                <Setter Value="{DynamicResource DarkBrush}" TargetName="Thumb" Property="Background" />
-                            </Trigger>
-
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                            <Trigger Property="Orientation" Value="Horizontal">
-                                <Setter TargetName="GridRoot" Property="LayoutTransform">
-                                    <Setter.Value>
-                                        <RotateTransform Angle="-90" />
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="PART_Track" Property="LayoutTransform">
-                                    <Setter.Value>
-                                        <RotateTransform Angle="-90" />
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Width" Value="Auto" />
-                                <Setter Property="Height" Value="12" />
-                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
-                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
-                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -248,14 +328,14 @@
             <ColumnDefinition Width="254*"/>
             <ColumnDefinition cssWPF:Css.Class="editor-column"/>
         </Grid.ColumnDefinitions>
-        <TextBlock cssWPF:Css.Class="main-title" Grid.ColumnSpan="2">Visual Studio Installer</TextBlock>
-        <StackPanel cssWPF:Css.Class="tabs" Grid.ColumnSpan="2">
+        <TextBlock cssWPF:Css.Class="main-title" Grid.Column="1" Grid.ColumnSpan="2">Visual Studio Installer</TextBlock>
+        <StackPanel cssWPF:Css.Class="tabs" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
             <Border cssWPF:Css.Class="tab-item">
                 <TextBlock Text="{x:Static local:InstallerResources.Products}"></TextBlock>
             </Border>
         </StackPanel>
-        <Border Name="contentBorder" Grid.ColumnSpan="3">
-            <Grid VerticalAlignment="Stretch">
+        <Border Name="contentBorder" Grid.Row="2" Grid.ColumnSpan="3">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="55"/>
                     <ColumnDefinition Width="*" MinWidth="200"/>
@@ -264,7 +344,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ScrollViewer cssWPF:Css.Class="content" CanContentScroll="false" PanningMode="Both">
+                <ScrollViewer cssWPF:Css.Class="content" Grid.ColumnSpan="2" CanContentScroll="false" PanningMode="Both">
                     <StackPanel ScrollViewer.CanContentScroll="False" >
                         <TextBlock cssWPF:Css.Class="header" Text="{x:Static local:InstallerResources.Installed}"></TextBlock>
 
@@ -277,7 +357,7 @@
                                             <ColumnDefinition Width="350"/>
                                         </Grid.ColumnDefinitions>
                                         <Image Source="Content/vs-logo.png" />
-                                        <StackPanel>
+                                        <StackPanel Grid.Column="1">
                                             <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
                                             <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
                                             <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
@@ -289,8 +369,8 @@
                                                 <Button Content="{x:Static local:InstallerResources.Launch}"></Button>
                                                 <Button cssWPF:Css.Class="more">
                                                     <TextBlock>
-                                                <Run Text="{x:Static local:InstallerResources.More}"></Run>
-                                                <Run cssWPF:Css.Class="fa fa-caret-down"></Run>
+                                                        <Run Text="{x:Static local:InstallerResources.More}"></Run>
+                                                        <Run cssWPF:Css.Class="fa fa-caret-down"></Run>
                                                     </TextBlock>
                                                 </Button>
                                             </StackPanel>
@@ -315,7 +395,7 @@
                             <Border>
                                 <TextBlock Text="{x:Static local:InstallerResources.Release}"></TextBlock>
                             </Border>
-                            <TextBlock cssWPF:Css.Class="close">x</TextBlock>
+                            <TextBlock cssWPF:Css.Class="close" Grid.Column="1">x</TextBlock>
                         </Grid>
                         
                         <ItemsControl ItemsSource="{Binding Release}" cssWPF:Css.Class="items">
@@ -327,7 +407,7 @@
                                             <ColumnDefinition Width="350"/>
                                         </Grid.ColumnDefinitions>
                                         <Image Source="Content/vs-logo.png" />
-                                        <StackPanel>
+                                        <StackPanel Grid.Column="1">
                                             <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
                                             <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
                                             <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
@@ -358,7 +438,7 @@
                             <Border>
                                 <TextBlock Text="{x:Static local:InstallerResources.Preview}"></TextBlock>
                             </Border>
-                            <TextBlock cssWPF:Css.Class="close">x</TextBlock>
+                            <TextBlock cssWPF:Css.Class="close" Grid.Column="1">x</TextBlock>
                         </Grid>
 
                         <ItemsControl ItemsSource="{Binding Preview}" cssWPF:Css.Class="items">
@@ -370,7 +450,7 @@
                                             <ColumnDefinition Width="350"/>
                                         </Grid.ColumnDefinitions>
                                         <Image Source="Content/vs-logo-preview.png" />
-                                        <StackPanel>
+                                        <StackPanel Grid.Column="1">
                                             <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
                                             <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
                                             <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
@@ -455,16 +535,18 @@
                             </Paragraph>
                         </FlowDocument>
                     </FlowDocumentScrollViewer>
-                    <Label Grid.Row="1">1.16.1237.423</Label>
-                    <Button Grid.Row="1" Width="90" HorizontalAlignment="Left" Click="Button_EditCss">
+                    <Label Grid.Row="1" cssWPF:Css.Class="version">1.17.1298.831</Label>
+                    <Button Grid.Row="1" cssWPF:Css.Class="css-edit-button" Click="Button_EditCss">
                         <TextBlock><Run cssWPF:Css.Class="fa fa-css3"></Run> <Run>Edit CSS</Run></TextBlock>
                     </Button>
                 </Grid>
             </Grid>
         </Border>
-        <TextBox Grid.Row="2" Grid.Column="3" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+        <TextBox Grid.Row="2" Grid.Column="3"
                  cssWPF:Css.Class="editor"
                  AcceptsReturn="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Text="{Binding Content, Source={StaticResource installer}, Delay=300, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
     </Grid>

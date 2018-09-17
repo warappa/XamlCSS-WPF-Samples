@@ -1,0 +1,45 @@
+﻿.fa {
+    FontFamily: "Assets/fonts/fontawesome-webfont.ttf#FontAwesome";
+
+
+    &.fa-css3 {
+        Text: "\f13c";
+    }
+
+    &.fa-window-maximize {
+        Text: "\f2d0";
+        Content: "\f2d0";
+    }
+
+    &.fa-window-maximize {
+        Text: "\f2d1";
+        Content: "\f2d1";
+    }
+
+    &.fa-times {
+        Text: "\f00d";
+        Content: "\f00d";
+    }
+
+    &.fa-bars {
+        // Text: ""; // f0c9
+        Text: "\f0c9";
+    }
+
+    &.fa-lock {
+        Text: "\f023";
+    }
+
+    &.fa-shoping-bag {
+        Text: "\f290";
+    }
+
+    &.fa-graduation-cap {
+        Text: "\f19d";
+    }
+
+    &.fa-caret-down {
+        Text: "\f0d7";
+        Content: "\f0d7";
+    }
+}

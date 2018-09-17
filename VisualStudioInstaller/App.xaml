@@ -5,359 +5,230 @@
              xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
              StartupUri="Installer.xaml">
     <Application.Resources>
-        <css:StyleSheet x:Key="installer" xml:space="preserve">
-<css:StyleSheet.Content>
-<![CDATA[
+        <ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
+            <Border  BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderThickness="1">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=WindowState}" Value="Maximized">
+                    <Setter Property="BorderThickness" Value="{Binding Source={x:Static SystemParameters.WindowResizeBorderThickness}}"/>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="60"
+                              CornerRadius="0"
+                              GlassFrameThickness="1"
+                              NonClientFrameEdges="None"
+                              ResizeBorderThickness="5"
+                              UseAeroCaptionButtons="False" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <ControlTemplate.Resources>
+                            <Style x:Key="ButtonTemplate" TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}"></ContentPresenter>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True" >
+                                        <Setter Property="Background" Value="#C9DEF5"></Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ControlTemplate.Resources>
+                        <Grid>
+                            <Border 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <AdornerDecorator>
+                                    <ContentPresenter />
+                                </AdornerDecorator>
+                            </Border>
+                            <Border 
+                                
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding Background}">
+                                <Grid Height="24"
+                                VerticalAlignment="Top">
 
-$vs-blue: #3399FF;
-$vs-violet: #8D68C8;    
-$link-color: $vs-blue;
-$header-color: #444;
-    
-     
-.dark {
-    Background: #333;
-    
-    TextBlock {
-        Foreground: White;
-    }
-    
-    .content {
-        .item .title, 
-        .item .info,
-        StackPanel .header {
-            Foreground: White;
-        }
-    }
-}
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-ScrollBar:visualtree {
-    Foreground: #D0D1D7;
-    Background: #E8E8EC;
-}
-    
-.fa {
-    FontFamily: "Assets/fonts/fontawesome-webfont.ttf#FontAwesome";
+                                    <TextBlock Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       FontSize="16"
+                                       Foreground="Black"
+                                       Text="{TemplateBinding Title}" 
+                                       Grid.Column="1"/>
 
-                    
-    &.fa-css3 {
-        Text: "\f13c";
-    }
-                    
-    &.fa-window-maximize {
-        Text: "\f2d0";
-        Content: "\f2d0";
-    }
-                
-    &.fa-window-maximize {
-        Text: "\f2d1";
-        Content: "\f2d1";
-    }
-                    
-    &.fa-times {
-        Text: "\f00d";
-        Content: "\f00d";
-    }
-                
-    &.fa-bars {
-        // Text: ""; // f0c9
-        Text: "\f0c9";
-    }
+                                    <Button Grid.Column="2"
+                                            Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Margin="0,0,30,0"
+                                        Cursor="Hand"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Grid>
+                                            <TextBlock Margin="0,7,0,0"></TextBlock>
+                                            <TextBlock Margin="6,0,0,0"></TextBlock>
+                                        </Grid>
+                                    </Button>
 
-    &.fa-lock {
-        Text: "\f023";
-    }
-                
-    &.fa-shoping-bag {
-        Text: "\f290";
-    }
-                
-    &.fa-graduation-cap {
-        Text: "\f19d";
-    }                
-                
-    &.fa-caret-down {
-        Text: "\f0d7";
-        Content: "\f0d7";
-    }
-}
-*|Installer {
-    TextOptions.TextFormattingMode: Ideal;
-    TextOptions.TextRenderingMode: Aliased;
-}
-Button {
-    Cursor: Hand;
-}
-                
-FlowDocument {
-    FontFamily: Arial;
-    Foreground: #666;
-    FontSize: 13.3;
-    LineHeight: 17;
-    PagePadding: 30, 35, 32, 5;
-                
-    .fa {
-        Foreground: #000;
-        MinWidth: 50;
-        FontSize: 15;
-    }
-                
-    Paragraph {
-        TextBlock.TextAlignment: Left;
-        Margin: 0,0,0,10;
-    }
-                
-    .list {
-        MarkerStyle: None;
-        Margin: 0, 20, 0, 0;
-        Padding: 0;
-    
-        Paragraph {
-            Margin: 0,0,0,5;
-        }
-    
-        .text {
-            Margin: 31,0,0,0;
-        }
-    }
-}
-                
-Hyperlink {
-    TextDecorations: None;
-    Cursor: Hand;
-    Foreground: $link-color;
-                            
-    @Property IsMouseOver true {
-        TextDecorations: Underline;
-    }
-}
-                 
-Run {
-    &.header {
-        FontSize: 23;
-        &.important {
-            FontSize: 17;
-            Foreground: $vs-blue;
-        }
-    }
-                
-    &.subheader {
-        FontSize: 17;
-        &.important {
-            Foreground: $vs-blue;
-        }
-    }
-}
-                
-TextBlock { 
-    FontSize: 13;
-}
-                
-.main-title {
-    FontSize: 34;
-    Foreground: $vs-violet;
-    Margin: 0,30,0,38;
-    Grid.Column: 1;
-}
-                
-.tabs {
-    Grid.Row: 1;
-    Grid.Column: 1;
-    Orientation: Horizontal;
-}
-                
-.tab-item {
-    Cursor: Hand;
-    BorderThickness: 0,0,0,3;
-    BorderBrush: $vs-blue;
-    HorizontalAlignment:Left;
-                    
-    > TextBlock {
-        FontSize: 16;
-        Height: 23;
-                
-        @Property IsMouseOver true {
-            Foreground: $vs-blue;
-        }
-    }
-}
-                
-#contentBorder {
-    BorderBrush: #ddd;
-    BorderThickness: 0,1,0,0;
-    Grid.ColumnSpan: 2;
-    Grid.Row: 2;
-}
-                
-.info-pane {
-    Grid.Column: 2;
-    Background: #f0f0f0;
-                
-    Label {
-        Foreground: #666;
-        HorizontalContentAlignment: Right;
-        Grid.Row: 1;
-        Padding: 0,3,20,3;
-    }
-}
-                
-.content {
-    Padding: 55,0,0,0;
-    VerticalScrollBarVisibility: Auto;
-    Grid.ColumnSpan: 2;
-                    
-    .header {
-        Margin: 0,35,0,20;
-        FontSize: 22;
-        Foreground: $header-color;
-    }
-    
-.sub-section {
-    Margin: 0,10,0,0;
-    
-    >.close {
-        Grid.Column:1;
-        Cursor: Hand;
-        Foreground: #999;
-        Margin: 0,10,0,0;
-    
-        @Property IsMouseOver True {
-            Foreground: $vs-blue;
-        }
-    }
-    
-    Border {
-        Margin: 15,0,10,10;
-        Padding: 0,0,0,3;
-        BorderBrush: #ddd;
-        BorderThickness: 0,0,0,1;
-        
-        >TextBlock{
-            Foreground: $vs-violet;
-        }
-    }
-}
-                
-.items {
-    Margin: 0,10,0,0;
-    Orientation:Horizontal;
-}
-                
-    .item {
-        MinHeight: 200;
-    
-        >Image {
-            Width: 23;
-            Height: 21;
-            VerticalAlignment: Top;
-            Margin: 0,7,0,0;
-        }
-        >StackPanel {
-            Grid.Column:1;
-        }
-        .title {
-            Margin: 0,5,0,0;
-            FontSize: 17;
-            Foreground: $header-color;
-        }
-        .version {
-            Margin: 0, 5,0,0;
-            Foreground:#6A6A6A;
-        }
-        .info {
-            Margin: 0, 5;
-            Foreground:#6A6A6A;
-            MinHeight: 50;
-        }
-        .link {
-            >Run {
-                Foreground: #999;
-            }
-        }
-                        
-        .actions{
-            Orientation:Horizontal;
-            Margin: 0,10;
-                            
-            Button {
-                Cursor: Hand;
-                BorderBrush: #bbb;
-                MinWidth: 85;
-                Height: 25;
-                
-                +Button {
-                    Margin: 5,10;
-                }
-                
-                &.more {
-                    Margin:0;
-                    BorderBrush: #0000;
-                    Background: #0000;
-                
-                    @Property IsMouseOver true {
-                        BorderBrush: #C9DEF5;
-                        Background: #C9DEF5;
-                    }
-                                    
-                    @Property IsFocused true {
-                        BorderBrush: #BEE6FD;
-                        Background: #BEE6FD;
-                    }
-                
-                    @Property IsPressed true {
-                        BorderBrush: $vs-blue;
-                        Background: $vs-blue;
-                    }
-                }
-            }
-        }
-    }
-}
-                
-Border {
-    Focusable: false;
-}
-                
-Button {
-    UseLayoutRounding: true;
-    SnapsToDevicePixels: true;
-    Background: #ECECF0;
-                
-    Template: #DynamicResource buttonTemplate;
-                
-    @Property IsMouseOver true {
-        BorderBrush: #3399FF;
-        Background: #C9DEF5;    
-    }
-                
-    @Property IsFocused true {
-        BorderBrush: $vs-blue;
-        Background: #BEE6FD;
-    }
-    
-    @Property IsPressed true {
-        BorderBrush: #3399FF;
-        Background: #3399FF;
-        Foreground: #fff;
-    }
+                                    <Button x:Name="btnMinimize"
+                                        Grid.Column="3"
+                                        Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Cursor="Hand"
+                                        VerticalContentAlignment="Bottom"
+                                        Click="MinimizeClick"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        Content=""
+                                        WindowChrome.IsHitTestVisibleInChrome="True" />
 
-}
-    
-.editor {
-    BorderThickness: 0;
-    Background: #f0f0f0;
-    Foreground: $vs-blue;
-}
-    
-.editor-column {
-    Width: 0;
-    
-    .edit-mode & {
-        Width: 254;
-    }
-}
-]]>
-</css:StyleSheet.Content>
+                                    <Button x:Name="btnRestore"
+                                            Grid.Column="4"
+                                            Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Cursor="Hand"
+                                        Click="MaximizeRestoreClick"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        Content=""
+                                        WindowChrome.IsHitTestVisibleInChrome="True" />
+
+
+                                    <Button x:Name="btnClose"
+                                            Grid.Column="5"
+                                            Style="{StaticResource ButtonTemplate}"
+                                        Width="24"
+                                        Height="24"
+                                        Cursor="Hand"
+                                        Click="CloseClick"
+                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
+                                        Content=""
+                                        WindowChrome.IsHitTestVisibleInChrome="True" />
+
+                                </Grid>
+                            </Border>
+
+                        </Grid>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <css:StyleSheet x:Key="windowStyle" xml:space="preserve">
+            <css:StyleSheet.BaseStyleSheets>
+                <css:StyleSheetCollection>
+                    <StaticResource ResourceKey="installer" />
+                </css:StyleSheetCollection>
+            </css:StyleSheet.BaseStyleSheets>
+            
         </css:StyleSheet>
+        <!--Scrollbar Thumbs-->
+        <Style TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"/>
+                            <Border Cursor="Hand" x:Name="Rectangle1" BorderThickness="7"  Margin="4,4,5,4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="{TemplateBinding Foreground}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Rectangle1" Property="BorderBrush" Value="#888888" />
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                                <Setter TargetName="Rectangle1" Property="Height" Value="8" />
+                                <Setter TargetName="Rectangle1" Property="Margin" Value="5,4,4,4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--ScrollBars-->
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="18" Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.00001*" />
+                            </Grid.RowDefinitions>
+
+                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Style="{DynamicResource ScrollThumbs}" Foreground="{TemplateBinding Foreground}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                <Setter Value="{DynamicResource ButtonSelectBrush}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+                            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                <Setter Value="{DynamicResource DarkBrush}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto" />
+                                <Setter Property="Height" Value="12" />
+                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
