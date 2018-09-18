@@ -23,7 +23,7 @@ namespace VisualStudioInstaller
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.ToggleClass("light dark");
+            this.ToggleClass("dark");
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)

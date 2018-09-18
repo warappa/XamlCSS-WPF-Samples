@@ -18,9 +18,8 @@
         <css:StyleSheet x:Key="installer" xml:space="preserve">
             <css:StyleSheet.Content>
                 <![CDATA[//
- @import "Content/fontawesome.scss";
-           
-/* BASE COLORS */
+                
+ /* BASE COLORS */
 $vs-blue: #3399FF;
 $vs-violet: #8D68C8;  
 $color-secondary-info: #6a6a6a;
@@ -51,8 +50,8 @@ $button-focus-background-color: #BEE6FD;
 $button-focus-border-color: $vs-blue;
 $button-active-background-color: #3399FF;                
 $button-active-border-color: #3399FF;                
-$button-active-foreground-color: #fff; 
-                
+$button-active-foreground-color: #fff;                
+ 
 TextBlock { 
     FontSize: $font-size-base;
 }
@@ -65,16 +64,11 @@ Hyperlink {
     TextDecorations: None;
     Cursor: Hand;
     Foreground: $link-color;
-                            
-    @Property IsMouseOver true {
-        TextDecorations: Underline;
-    }
-} 
-    
-ScrollBar:visualtree {
-    Foreground: #D0D1D7;
-    Background: #E8E8EC;
+                 
+    /* TODO: MouseOver */
 }
+                
+/* TODO Scrollbar */
     
 Button {
     Cursor: Hand;
@@ -82,32 +76,16 @@ Button {
     SnapsToDevicePixels: true;
     Background: $button-background-color;
                 
-    Template: #DynamicResource buttonTemplate;
+    /* TODO Button States */
                 
-    @Property IsMouseOver true {
-        BorderBrush: $button-hover-border-color;
-        Background: $button-hover-background-color;    
-    }
-                
-    @Property IsFocused true {
-        BorderBrush: $button-focus-border-color;
-        Background: $button-focus-background-color;
-    }
-    
-    @Property IsPressed true {
-        FontWeight: Bold;
-        BorderBrush: $button-active-border-color;
-        Background: $button-active-background-color;
-        Foreground: $button-active-foreground-color;
-    }
-}                
+}   
                 
   
 .main-title {
     FontSize: $font-size-jumbo;
     Foreground: $vs-violet;
     Margin: 0,30,0,38;
-}  
+}   
                 
 .tabs {
     Orientation: Horizontal;
@@ -124,12 +102,10 @@ Button {
         FontWeight: SemiBold;
         Foreground: $header-color;
     
-        @Property IsMouseOver true {
-            Foreground: $vs-blue;
-        }
+        /* TODO Tab-Item MouseOver */
     }
 }                
-                 
+                
 #contentBorder {
     BorderBrush: $border-color;
     BorderThickness: 0,1,0,0;
@@ -198,28 +174,12 @@ Button {
                         Margin: 0;
                         BorderBrush: Transparent;
                         Background: Transparent;
-                
-                        @Property IsMouseOver true {
-                            BorderBrush: $control-hover-background-color;
-                            Background: $control-hover-background-color;
-                        }
-                                    
-                        @Property IsFocused true {
-                            BorderBrush: $control-focus-background-color;
-                            Background: $control-focus-background-color;
-                        }
-                
-                        @Property IsPressed true {
-                            BorderBrush: $vs-blue;
-                            Background: $vs-blue;
-                        }
                     }
                 }
             }
         }
     }
-}                
-   
+} 
    
 .info-pane {
     Background: #f0f0f0;
@@ -281,8 +241,7 @@ Button {
             }
         }
     }
-}  
-                
+}    
                 
    
 .editor { 
@@ -294,23 +253,8 @@ Button {
     .edit-mode & {
         Width: 554;
     }
-}  
-.dark {
-    Background: #333;
-    
-    TextBlock {
-        Foreground: White;
-    }
-    
-    #contentBorder .content {
-        .item .title, 
-        .item .info,
-        StackPanel .header {
-            Foreground: White;
-        }
-    }
-}
-                
+} 
+                        
                 ]]>
             </css:StyleSheet.Content>
         </css:StyleSheet>
