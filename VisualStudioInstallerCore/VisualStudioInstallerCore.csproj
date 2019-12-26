@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\fonts\fontawesome-webfont.ttf" />
+    <None Remove="Content\fontawesome.scss" />
+    <None Remove="Content\vs-logo-preview.png" />
+    <None Remove="Content\vs-logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Content\fontawesome.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.Shell" Version="3.0.1" />
+    <PackageReference Include="XamlCSS" Version="2.2.0" />
+    <PackageReference Include="XamlCSS.WPF" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Web\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\fonts\fontawesome-webfont.ttf" />
+    <Resource Include="Content\vs-logo-preview.png" />
+    <Resource Include="Content\vs-logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Installer.xaml.cs">
+      <DependentUpon>Installer.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="InstallerResources.Designer.cs">
+      <DependentUpon>InstallerResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="InstallerResources.resx">
+      <LastGenOutput>InstallerResources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Installer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>
