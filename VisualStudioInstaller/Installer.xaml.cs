@@ -37,5 +37,11 @@ namespace VisualStudioInstaller
         {
             this.ToggleClass("edit-mode");
         }
+
+        private void Button_OpenNewInstallerWindow(object sender, RoutedEventArgs e)
+        {
+            var newInstaller = new Installer();
+            newInstaller.Show();
+        }
     }
 }

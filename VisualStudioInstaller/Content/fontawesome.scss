@@ -1,22 +1,24 @@
-﻿.fa {
+﻿.fa, .fa:visualtree {
     FontFamily: "Assets/fonts/fontawesome-webfont.ttf#FontAwesome";
-
 
     &.fa-css3 {
         Text: "\f13c";
     }
 
-    &.fa-window-maximize {
-        Text: "\f2d0";
-        Content: "\f2d0";
-    }
-
-    &.fa-window-maximize {
+    &.fa-window-minimize,
+    &.fa-window-minimize:visualtree {
         Text: "\f2d1";
         Content: "\f2d1";
     }
 
-    &.fa-times {
+    &.fa-window-maximize, 
+    &.fa-window-maximize:visualtree {
+        Text: "\f2d0";
+        Content: "\f2d0";
+    }
+
+    &.fa-times, 
+    &.fa-times:visualtree {
         Text: "\f00d";
         Content: "\f00d";
     }

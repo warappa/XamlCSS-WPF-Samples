@@ -3,8 +3,317 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:VisualStudioInstaller"
              xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
+             xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
              StartupUri="Installer.xaml">
     <Application.Resources>
+        <css:StyleSheet x:Key="installer" xml:space="preserve" IsSharedApplicationStyleSheet="True">
+            <css:StyleSheet.Content>
+                <![CDATA[//
+ @import "Content/fontawesome.scss";
+           
+/* BASE COLORS */
+$vs-blue: #3399FF;
+$vs-violet: #8D68C8;  
+$color-secondary-info: #6a6a6a;
+    
+/* GENERIC CONTROL COLORS */
+$border-color: #ddd;
+$control-border: #bbb;
+$control-hover-background-color: #C9DEF5;
+$control-focus-background-color: #BEE6FD;
+
+/* SPECIAL COLORS */
+$info-text-color: #666;  
+$link-color: #267CD2;
+$header-color: #444;
+$color-separator: #999;
+    
+/* FONT SIZES */
+$font-size-base: 13;
+$font-size-larger: 17;
+$font-size-large: 22;
+$font-size-jumbo: 34;
+
+/* BUTTON */
+$button-background-color: #ECECF0;                
+$button-hover-background-color: #C9DEF5;                
+$button-hover-border-color: #3399FF;                
+$button-focus-background-color: #BEE6FD;                
+$button-focus-border-color: $vs-blue;
+$button-active-background-color: #3399FF;                
+$button-active-border-color: #3399FF;                
+$button-active-foreground-color: #fff; 
+
+.taskbar {
+    Button:visualtree {
+        Width: 24;
+        Height: 24;
+        FontSize: 16;
+        Cursor: Hand;
+        VerticalContentAlignment:Bottom;
+    }
+}
+TextBlock { 
+    FontSize: $font-size-base;
+}
+                
+Border {
+    Focusable: false;
+}
+               
+Hyperlink {
+    TextDecorations: None;
+    Cursor: Hand;
+    Foreground: $link-color;
+                            
+    @Property IsMouseOver true {
+        TextDecorations: Underline;
+    }
+} 
+    
+ScrollBar:visualtree {
+    Foreground: #D0D1D7;
+    Background: #E8E8EC;
+}
+    
+Button {
+    Cursor: Hand;
+    UseLayoutRounding: true;
+    SnapsToDevicePixels: true;
+    Background: $button-background-color;
+                
+    Template: #DynamicResource buttonTemplate;
+                
+    @Property IsMouseOver true {
+        BorderBrush: $button-hover-border-color;
+        Background: $button-hover-background-color;    
+    }
+                
+    @Property IsFocused true {
+        BorderBrush: $button-focus-border-color;
+        Background: $button-focus-background-color;
+    }
+    
+    @Property IsPressed true {
+        FontWeight: Bold;
+        BorderBrush: $button-active-border-color;
+        Background: $button-active-background-color;
+        Foreground: $button-active-foreground-color;
+    }
+}                
+                
+  
+.main-title {
+    FontSize: $font-size-jumbo;
+    Foreground: $vs-violet;
+    Margin: 0,30,0,38;
+}  
+                
+.tabs {
+    Orientation: Horizontal;
+}
+                
+.tab-item {
+    Cursor: Hand;
+    BorderThickness: 0,0,0,3;
+    BorderBrush: $vs-blue;
+                    
+    > TextBlock {
+        FontSize: 16;
+        Height: 23;
+        FontWeight: SemiBold;
+        Foreground: $header-color;
+    
+        @Property IsMouseOver true {
+            Foreground: $vs-blue;
+        }
+    }
+}                
+                 
+#contentBorder {
+    BorderBrush: $border-color;
+    BorderThickness: 0,1,0,0;
+
+    .content {
+        Padding: 55,0,0,0;
+        VerticalScrollBarVisibility: Auto;
+                    
+        .header {
+            Margin: 0,35,0,20;
+            FontSize: $font-size-large;
+            Foreground: $header-color;
+        }
+    
+               
+        .items {
+            Margin: 0,10,0,0;
+            Orientation: Horizontal;
+        }
+                
+        .item {
+            MinHeight: 190;
+    
+            >Image {
+                Width: 23;
+                Height: 21;
+                VerticalAlignment: Top;
+                Margin: 0,7,0,0;
+            }
+    
+            .title {
+                Margin: 0,5,0,0;
+                FontSize: $font-size-larger;
+                Foreground: $header-color;
+            }
+            .version {
+                Margin: 0, 5,0,0;
+                Foreground: $color-secondary-info;
+            }
+            .info {
+                Margin: 0, 5;
+                Foreground: $color-secondary-info;
+                MinHeight: 50;
+            }
+            .link {
+                >Run {
+                    Foreground: $color-separator;
+                }
+            }
+                        
+            .actions {
+                Orientation: Horizontal;
+                Margin: 0,10;
+                            
+                Button {
+                    Cursor: Hand;
+                    BorderBrush: $control-border;
+                    MinWidth: 85;
+                    Height: 25;
+                
+                    +Button {
+                        Margin: 5,10;
+                    }
+                
+                    &.more {
+                        Margin: 0;
+                        BorderBrush: Transparent;
+                        Background: Transparent;
+                
+                        @Property IsMouseOver true {
+                            BorderBrush: $control-hover-background-color;
+                            Background: $control-hover-background-color;
+                        }
+                                    
+                        @Property IsFocused true {
+                            BorderBrush: $control-focus-background-color;
+                            Background: $control-focus-background-color;
+                        }
+                
+                        @Property IsPressed true {
+                            BorderBrush: $vs-blue;
+                            Background: $vs-blue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}                
+   
+   
+.info-pane {
+    Background: #f0f0f0;
+                
+    .version {
+        Foreground: $info-text-color;
+        HorizontalContentAlignment: Right;
+        Padding: 0,3,20,3;
+    }
+    
+    .css-edit-button {
+        Width: 90;
+        HorizontalAlignment: Left;
+    }
+    
+                   
+    FlowDocument {
+        FontFamily: Arial;
+        Foreground: $info-text-color;
+        FontSize: 13.3;
+        LineHeight: 17;
+        PagePadding: 30, 35, 32, 5;
+                
+        .fa {
+            Foreground: #000;
+            MinWidth: 50;
+            FontSize: 15;
+        }
+                
+        Paragraph {
+            TextBlock.TextAlignment: Left;
+            Margin: 0,0,0,10;
+        }
+    
+        Run {
+            &.header {
+                FontSize: $font-size-large;
+            }
+                
+            &.subheader {
+                FontSize: $font-size-larger;
+            }
+        }
+    Hyperlink {
+        Foreground: #267CD2;
+    }
+                
+        .list {
+            MarkerStyle: None;
+            Margin: 0, 20, 0, 0;
+            Padding: 0;
+    
+            Paragraph {
+                Margin: 0,0,0,5;
+            }
+    
+            .text {
+                Margin: 31,0,0,0;
+            }
+        }
+    }
+}  
+                
+                
+   
+.editor { 
+    FontSize: 13;
+}
+.editor-column {
+    Width: 0;
+    
+    .edit-mode & {
+        Width: 554;
+    }
+}  
+.dark {
+    Background: #333;
+    
+    TextBlock {
+        Foreground: White;
+    }
+    
+    #contentBorder .content {
+        .item .title, 
+        .item .info,
+        StackPanel .header {
+            Foreground: White;
+        }
+    }
+}
+                
+                ]]>
+            </css:StyleSheet.Content>
+        </css:StyleSheet>
         <ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
             <Border  BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderThickness="1">
                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -63,7 +372,8 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding Background}">
                                 <Grid Height="24"
-                                VerticalAlignment="Top">
+                                VerticalAlignment="Top"
+                                      cssWPF:Css.Class="taskbar">
 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -84,12 +394,9 @@
 
                                     <Button Grid.Column="2"
                                             Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Margin="0,0,30,0"
-                                        Cursor="Hand"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        WindowChrome.IsHitTestVisibleInChrome="True">
+                                            Margin="0,0,30,0"
+                                            cssWPF:Css.Class="fa"
+                                            WindowChrome.IsHitTestVisibleInChrome="True">
                                         <Grid>
                                             <TextBlock Margin="0,7,0,0"></TextBlock>
                                             <TextBlock Margin="6,0,0,0"></TextBlock>
@@ -99,36 +406,23 @@
                                     <Button x:Name="btnMinimize"
                                         Grid.Column="3"
                                         Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Cursor="Hand"
-                                        VerticalContentAlignment="Bottom"
                                         Click="MinimizeClick"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        Content=""
+                                        cssWPF:Css.Class="fa fa-window-minimize"
                                         WindowChrome.IsHitTestVisibleInChrome="True" />
 
                                     <Button x:Name="btnRestore"
                                             Grid.Column="4"
                                             Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Cursor="Hand"
                                         Click="MaximizeRestoreClick"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        Content=""
+                                        cssWPF:Css.Class="fa fa-window-maximize"
                                         WindowChrome.IsHitTestVisibleInChrome="True" />
 
 
                                     <Button x:Name="btnClose"
                                             Grid.Column="5"
                                             Style="{StaticResource ButtonTemplate}"
-                                        Width="24"
-                                        Height="24"
-                                        Cursor="Hand"
+                                            cssWPF:Css.Class="fa fa-times"
                                         Click="CloseClick"
-                                        FontFamily="Assets/fonts/fontawesome-webfont.ttf#FontAwesome"
-                                        Content=""
                                         WindowChrome.IsHitTestVisibleInChrome="True" />
 
                                 </Grid>
@@ -140,14 +434,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <css:StyleSheet x:Key="windowStyle" xml:space="preserve">
-            <css:StyleSheet.BaseStyleSheets>
-                <css:StyleSheetCollection>
-                    <StaticResource ResourceKey="installer" />
-                </css:StyleSheetCollection>
-            </css:StyleSheet.BaseStyleSheets>
-            
-        </css:StyleSheet>
+        
         <!--Scrollbar Thumbs-->
         <Style TargetType="{x:Type Thumb}">
             <Setter Property="Template">
