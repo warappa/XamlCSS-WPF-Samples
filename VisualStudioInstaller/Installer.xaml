@@ -46,26 +46,29 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <ScrollViewer cssWPF:Css.Class="content" Grid.ColumnSpan="2" CanContentScroll="false" PanningMode="Both">
-                    <StackPanel ScrollViewer.CanContentScroll="False" >
+                    <StackPanel ScrollViewer.CanContentScroll="False">
                         <TextBlock cssWPF:Css.Class="header" Text="{x:Static local:InstallerResources.Installed}"></TextBlock>
 
                         <ItemsControl ItemsSource="{Binding Installed}" cssWPF:Css.Class="items">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid cssWPF:Css.Class="item">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="55"/>
-                                            <ColumnDefinition Width="350"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="Content/vs-logo.png" />
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="link">
+                                    <Border cssWPF:Css.Class="item">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="55"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="Content/vs-logo.png" />
+                                            <StackPanel Grid.Column="1" cssWPF:Css.Class="item-description">
+                                                <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="link">
                                                 <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
-                                            </TextBlock>
-                                            <StackPanel cssWPF:Css.Class="actions" Orientation="Horizontal">
+                                                </TextBlock>                                                
+                                            </StackPanel>
+                                            <StackPanel cssWPF:Css.Class="actions">
                                                 <Button Click="Button_Click" Content="{x:Static local:InstallerResources.Change}"></Button>
                                                 <Button Content="{x:Static local:InstallerResources.Launch}" Click="Button_OpenNewInstallerWindow"></Button>
                                                 <Button cssWPF:Css.Class="more">
@@ -75,8 +78,8 @@
                                                     </TextBlock>
                                                 </Button>
                                             </StackPanel>
-                                        </StackPanel>
-                                    </Grid>
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                             <ItemsControl.ItemsPanel>
@@ -96,32 +99,42 @@
                             <Border>
                                 <TextBlock Text="{x:Static local:InstallerResources.Release}"></TextBlock>
                             </Border>
-                            <TextBlock cssWPF:Css.Class="close" Grid.Column="1">x</TextBlock>
+                            <TextBlock cssWPF:Css.Class="close fa fa-times" Grid.Column="1"/>
                         </Grid>
                         
                         <ItemsControl ItemsSource="{Binding Release}" cssWPF:Css.Class="items">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid cssWPF:Css.Class="item">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="55"/>
-                                            <ColumnDefinition Width="350"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="Content/vs-logo.png" />
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="link">
-                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.License_Terms}"></Run></Hyperlink>
-                                                <Run>&#160;|&#160;</Run>
-                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
-                                            </TextBlock>
-                                            <StackPanel cssWPF:Css.Class="actions" Orientation="Horizontal">
-                                                <Button Content="{x:Static local:InstallerResources.Install}"></Button>
+                                    <Border cssWPF:Css.Class="item">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="55"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="Content/vs-logo.png" />
+                                            <StackPanel Grid.Column="1" cssWPF:Css.Class="item-description">
+                                                <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="link">
+                                                    <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.License_Terms}"></Run></Hyperlink>
+                                                    <Run>&#160;|&#160;</Run>
+                                                    <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
+                                                </TextBlock>
+                                                
                                             </StackPanel>
-                                        </StackPanel>
-                                    </Grid>
+                                            <StackPanel Grid.Column="2" cssWPF:Css.Class="actions">
+                                                <Button Content="{x:Static local:InstallerResources.Install}"></Button>
+                                                <Button cssWPF:Css.Class="more">
+                                                    <TextBlock>
+                                                        <Run Text="{x:Static local:InstallerResources.More}"></Run>
+                                                        <Run cssWPF:Css.Class="fa fa-caret-down"></Run>
+                                                    </TextBlock>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                             <ItemsControl.ItemsPanel>
@@ -139,32 +152,41 @@
                             <Border>
                                 <TextBlock Text="{x:Static local:InstallerResources.Preview}"></TextBlock>
                             </Border>
-                            <TextBlock cssWPF:Css.Class="close" Grid.Column="1">x</TextBlock>
+                            <TextBlock cssWPF:Css.Class="close fa fa-times" Grid.Column="1"/>
                         </Grid>
 
                         <ItemsControl ItemsSource="{Binding Preview}" cssWPF:Css.Class="items">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid cssWPF:Css.Class="item">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="55"/>
-                                            <ColumnDefinition Width="350"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="Content/vs-logo-preview.png" />
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
-                                            <TextBlock cssWPF:Css.Class="link">
-                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.License_Terms}"></Run></Hyperlink>
-                                                <Run>&#160;|&#160;</Run>
-                                                <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
-                                            </TextBlock>
-                                            <StackPanel cssWPF:Css.Class="actions" Orientation="Horizontal">
-                                                <Button Content="{x:Static local:InstallerResources.Install}"></Button>
+                                    <Border cssWPF:Css.Class="item">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="55"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="Content/vs-logo-preview.png" />
+                                            <StackPanel Grid.Column="1" cssWPF:Css.Class="item-description">
+                                                <TextBlock cssWPF:Css.Class="title" Text="{Binding Title}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="version" Text="{Binding Version}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="info" TextWrapping="Wrap" Text="{Binding Info}"></TextBlock>
+                                                <TextBlock cssWPF:Css.Class="link">
+                                                    <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.License_Terms}"></Run></Hyperlink>
+                                                    <Run>&#160;|&#160;</Run>
+                                                    <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static local:InstallerResources.ReleaseNotes}"></Run></Hyperlink>
+                                                </TextBlock>
                                             </StackPanel>
-                                        </StackPanel>
-                                    </Grid>
+                                            <StackPanel cssWPF:Css.Class="actions">
+                                                <Button Content="{x:Static local:InstallerResources.Install}"></Button>
+                                                <Button cssWPF:Css.Class="more">
+                                                    <TextBlock>
+                                                        <Run Text="{x:Static local:InstallerResources.More}"></Run>
+                                                        <Run cssWPF:Css.Class="fa fa-caret-down"></Run>
+                                                    </TextBlock>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                             <ItemsControl.ItemsPanel>

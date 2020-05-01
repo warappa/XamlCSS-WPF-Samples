@@ -14,6 +14,360 @@
 /* BASE COLORS */
 $vs-blue: #3399FF;
 $vs-violet: #8D68C8;  
+$vs-darkgray:#333;
+$color-secondary-info: #6a6a6a;
+    
+/* GENERIC CONTROL COLORS */
+$border-color: #ddd;
+$control-border: #E5E5E5;
+$control-hover-background-color: #C9DEF5;
+$control-focus-background-color: #BEE6FD;
+
+/* SPECIAL COLORS */
+$info-text-color: #666;  
+$link-color: #267CD2;
+$header-color: #444;
+$color-separator: #999;
+    
+/* FONT SIZES */
+$font-size-base: 13;
+$font-size-larger: 17;
+$font-size-large: 22;
+$font-size-jumbo: 34;
+
+/* BUTTON */
+$button-background-color: #FBFBFB;                
+$button-hover-background-color: #C9DEF5;                
+$button-hover-border-color: #3399FF;                
+$button-focus-background-color: #BEE6FD;                
+$button-focus-border-color: $vs-blue;
+$button-active-background-color: #3399FF;                
+$button-active-border-color: #3399FF;                
+$button-active-foreground-color: #fff; 
+
+.taskbar {
+    Button:visualtree {
+        Width: 24;
+        Height: 24;
+        FontSize: 16;
+        Cursor: Hand;
+        VerticalContentAlignment:Bottom;
+    }
+}
+TextBlock { 
+    FontSize: $font-size-base;
+}
+                
+Border {
+    Focusable: false;
+}
+               
+Hyperlink {
+    TextDecorations: None;
+    Cursor: Hand;
+    Foreground: $link-color;
+                            
+    @Property IsMouseOver true {
+        TextDecorations: Underline;
+    }
+} 
+    
+ScrollBar:visualtree {
+    Foreground: #D0D1D7;
+    Background: #E8E8EC;
+}
+    
+Button {
+    Cursor: Hand;
+    UseLayoutRounding: true;
+    SnapsToDevicePixels: true;
+    Background: $button-background-color;
+    BorderBrush: $control-border;
+    FontSize: $font-size-base;
+                
+    Template: #DynamicResource buttonTemplate;
+                
+    @Property IsMouseOver true {
+        BorderBrush: $button-hover-border-color;
+        Background: $button-hover-background-color;    
+    }
+                
+    @Property IsFocused true {
+        BorderBrush: $button-focus-border-color;
+        Background: $button-focus-background-color;
+    }
+    
+    @Property IsPressed true {
+        FontWeight: Bold;
+        BorderBrush: $button-active-border-color;
+        Background: $button-active-background-color;
+        Foreground: $button-active-foreground-color;
+    }
+}                
+                
+  
+.main-title {
+    FontSize: $font-size-jumbo;
+    Foreground: $vs-darkgray;
+    Margin: 0,30,0,38;
+}  
+                
+.tabs {
+    Orientation: Horizontal;
+}
+                
+.tab-item {
+    Cursor: Hand;
+    BorderThickness: 0,0,0,3;
+    BorderBrush: $vs-blue;
+                    
+    > TextBlock {
+        FontSize: 16;
+        Height: 23;
+        FontWeight: SemiBold;
+        Foreground: $header-color;
+    
+        @Property IsMouseOver true {
+            Foreground: $vs-blue;
+        }
+    }
+}                
+                 
+#contentBorder {
+    BorderBrush: $border-color;
+    BorderThickness: 0,1,0,0;
+
+    .content {
+        Background: #fafafa;
+        Padding: 55,0,0,0;
+        VerticalScrollBarVisibility: Auto;
+                    
+        .header {
+            Margin: 0,35,0,20;
+            FontSize: $font-size-large;
+            Foreground: $header-color;
+        }
+                
+        .sub-section{
+            >Border {
+                BorderBrush: $control-border;
+                BorderThickness: 0,0,0,1;
+            }
+            .close {
+                FontWeight: ExtraLight;
+            }
+        }
+    
+               
+        .items {
+            Margin: 0,10,0,0;
+            Orientation: Horizontal;
+        }
+                
+        .item {
+            BorderThickness: 1,1,1,1;
+            BorderBrush: #eee;
+            Background: #fff;
+            MinHeight: 150;
+            Margin: 0, 0, 0, 10;
+    
+            Grid>Image {
+                Width: 23;
+                Height: 21;
+                VerticalAlignment: Top;
+                Margin: 0,7,0,0;
+            }
+            .item-description {
+                Width: 450;
+                Margin: 0,0,10,0;
+            }
+    
+            .title {
+                Margin: 0,5,0,0;
+                FontSize: $font-size-larger;
+                Foreground: $header-color;
+            }
+            .version {
+                Margin: 0, 5,0,0;
+                Foreground: $color-secondary-info;
+            }
+            .info {
+                Margin: 0, 5;
+                Foreground: $color-secondary-info;
+                MinHeight: 50;
+            }
+            .link {
+                >Run {
+                    Foreground: $color-separator;
+                }
+            }
+                        
+            .actions {
+                Width: 150;
+                Orientation: Vertical;                
+                Grid.Column: 2;
+                            
+                Button {
+                    HorizontalAlignment: Stretch;
+                    Cursor: Hand;                    
+                    
+                    Height: 25;
+                    Margin: 0,10,10,0;
+                
+                    + Button {                
+                        Margin: 0,10,10,0;
+                    }
+                
+                    TextBlock {
+                        FontSize: $font-size-base;
+                    }
+                }
+            }
+        }
+    }
+}                
+   
+   
+.info-pane {
+    Background: #FBFBFB;
+                
+    .version {
+        Foreground: $info-text-color;
+        HorizontalContentAlignment: Right;
+        Padding: 0,3,20,3;
+    }
+    
+    .css-edit-button {
+        Width: 90;
+        HorizontalAlignment: Left;
+    }
+    
+                   
+    FlowDocument {
+        FontFamily: Arial;
+        Foreground: $info-text-color;
+        FontSize: 13.3;
+        LineHeight: 17;
+        PagePadding: 30, 35, 32, 5;
+                
+        .fa {
+            Foreground: #000;
+            MinWidth: 50;
+            FontSize: 15;
+        }
+                
+        Paragraph {
+            TextBlock.TextAlignment: Left;
+            Margin: 0,0,0,10;
+        }
+    
+        Run {
+            &.header {
+                FontSize: $font-size-large;
+            }
+                
+            &.subheader {
+                FontSize: $font-size-larger;
+            }
+        }
+    Hyperlink {
+        Foreground: #267CD2;
+    }
+                
+        .list {
+            MarkerStyle: None;
+            Margin: 0, 20, 0, 0;
+            Padding: 0;
+    
+            Paragraph {
+                Margin: 0,0,0,5;
+            }
+    
+            .text {
+                Margin: 31,0,0,0;
+            }
+        }
+    }
+}  
+                
+                
+   
+.editor { 
+    FontSize: 13;
+}
+.editor-column {
+    Width: 0;
+    
+    .edit-mode & {
+        Width: 554;
+    }
+}  
+.dark {
+    Background: #333;
+    
+    TextBlock {
+        Foreground: #ddd;
+    }
+                
+    Button {
+        Background: #585858;
+        BorderBrush: #393939;      
+                
+        >TextBlock {
+            Foreground: #000;
+        }
+    }
+    #contentBorder {
+        BorderBrush: $vs-blue;
+        .content {
+            Background: Transparent;
+                
+            .item {
+                Background: #444;
+                BorderBrush: #262626;
+            }
+                
+            .item .title, 
+            .item .info,
+            StackPanel .header {
+                Foreground: #ccc;
+            }
+        }
+    }
+                
+    .info-pane {
+        Background: #444;
+        
+        FlowDocument {
+            Foreground: #ccc;     
+                
+            .fa {
+                Foreground: #ccc;
+            }
+        }
+    }
+                
+    Hyperlink {
+        Foreground: #378de3;
+    }
+                
+    ScrollBar:visualtree {
+        Foreground: #333;
+        Background: #555;
+    }
+}
+                
+                ]]>
+            </css:StyleSheet.Content>
+        </css:StyleSheet>
+        <css:StyleSheet x:Key="installer_old" xml:space="preserve" IsSharedApplicationStyleSheet="False">
+            <css:StyleSheet.Content>
+                <![CDATA[//
+ @import "Content/fontawesome.scss";
+           
+/* BASE COLORS */
+$vs-blue: #3399FF;
+$vs-violet: #8D68C8;  
 $color-secondary-info: #6a6a6a;
     
 /* GENERIC CONTROL COLORS */
@@ -153,7 +507,7 @@ Button {
         .item {
             MinHeight: 190;
     
-            >Image {
+            Image {
                 Width: 23;
                 Height: 21;
                 VerticalAlignment: Top;
@@ -183,6 +537,7 @@ Button {
             .actions {
                 Orientation: Horizontal;
                 Margin: 0,10;
+                Grid.Column: 1;
                             
                 Button {
                     Cursor: Hand;
